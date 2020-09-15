@@ -1,0 +1,4 @@
+name: Reactor
+version: ${project.version}
+main: dev.dejay.reactor.ReactorPlugin
+api-version: 1.16
