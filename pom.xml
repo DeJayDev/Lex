@@ -12,9 +12,15 @@
   <name>Reactor</name>
 
   <properties>
-    <java.version>1.8</java.version>
+    <java.version>11</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+    </repository>
+  </distributionManagement>
 
   <build>
     <plugins>
@@ -23,8 +29,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
+          <release>${java.version}</release>
         </configuration>
       </plugin>
       <plugin>
@@ -43,6 +48,18 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>dev.dejay.reactor.Reactor</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
     </plugins>
     <resources>
       <resource>
@@ -59,46 +76,44 @@
     </repository>
     <repository>
       <id>velocity</id>
-      <url>https://repo.velocitypowered.com/snapshots/</url>
-    </repository>
-    <repository>
-      <id>sonatype</id>
-      <url>https://oss.sonatype.org/content/groups/public/</url>
-    </repository>
-    <repository>
-      <id>sonatype-oss</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <url>https://nexus.velocitypowered.com/repository/maven-public/</url>
     </repository>
   </repositories>
 
   <dependencies>
     <!-- Servers -->
-    <!-- Paper 1.16.3 -->
+    <!-- Paper 1.16.4 -->
     <dependency>
       <groupId>com.destroystokyo.paper</groupId>
       <artifactId>paper</artifactId>
-      <version>1.16.3-R0.1-SNAPSHOT</version>
+      <version>1.16.4-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
-    <!-- Waterfall 1.16.3 -->
+    <!-- Waterfall 1.16.4 -->
     <dependency>
       <groupId>io.github.waterfallmc</groupId>
       <artifactId>waterfall-api</artifactId>
       <version>1.16-R0.4-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
-    <!-- Velocity 1.1.0 -->
+    <!-- Velocity 1.1.1 -->
     <dependency>
       <groupId>com.velocitypowered</groupId>
       <artifactId>velocity-api</artifactId>
-      <version>1.1.0-SNAPSHOT</version>
+      <version>1.1.1</version>
       <scope>provided</scope>
     </dependency>
     <!-- Core Dependencies -->
     <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.16</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-api</artifactId>
-      <version>4.0.0-SNAPSHOT</version>
+      <version>4.2.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>net.kyori</groupId>
@@ -106,15 +121,9 @@
       <version>4.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <version>4.2.3</version>
-      <classifier>no_aop</classifier> <!-- I don't need whatever AOP is -->
-    </dependency>
-    <dependency>
-      <groupId>com.konghq</groupId>
-      <artifactId>unirest-java</artifactId>
-      <version>3.10.00</version>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.9.0</version>
     </dependency>
   </dependencies>
 </project>
