@@ -1,7 +1,6 @@
 package dev.dejay.reactor.config;
 
 import dev.dejay.reactor.config.type.JsonConfig;
-import dev.dejay.reactor.config.type.TomlConfig;
 import dev.dejay.reactor.config.type.YamlConfig;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
@@ -44,8 +43,7 @@ public interface LoadableConfig<T extends LoadableConfig> {
     @SuppressWarnings("unchecked")
     static <T extends LoadableConfig> T getByClass(Class<T> configClass) {
         if (!(YamlConfig.class.isAssignableFrom(configClass))
-            && !(JsonConfig.class.isAssignableFrom(configClass))
-            && !(TomlConfig.class.isAssignableFrom(configClass))) {
+            && !(JsonConfig.class.isAssignableFrom(configClass))) {
             throw new IllegalArgumentException("This class cannot be instantiated. Is not a ConfigType, type.");
         }
 

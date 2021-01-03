@@ -6,13 +6,13 @@
 
   <groupId>dev.dejay</groupId>
   <artifactId>reactor</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <packaging>jar</packaging>
 
   <name>Reactor</name>
 
   <properties>
-    <java.version>11</java.version>
+    <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -29,7 +29,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <release>${java.version}</release>
+          <release>8</release>
         </configuration>
       </plugin>
       <plugin>
@@ -43,6 +43,7 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <minimizeJar>true</minimizeJar>
               <createDependencyReducedPom>false</createDependencyReducedPom>
             </configuration>
           </execution>
@@ -74,33 +75,14 @@
       <id>papermc-repo</id>
       <url>https://papermc.io/repo/repository/maven-public/</url>
     </repository>
-    <repository>
-      <id>velocity</id>
-      <url>https://nexus.velocitypowered.com/repository/maven-public/</url>
-    </repository>
   </repositories>
 
   <dependencies>
-    <!-- Servers -->
     <!-- Paper 1.16.4 -->
     <dependency>
       <groupId>com.destroystokyo.paper</groupId>
       <artifactId>paper</artifactId>
       <version>1.16.4-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-    <!-- Waterfall 1.16.4 -->
-    <dependency>
-      <groupId>io.github.waterfallmc</groupId>
-      <artifactId>waterfall-api</artifactId>
-      <version>1.16-R0.4-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-    <!-- Velocity 1.1.1 -->
-    <dependency>
-      <groupId>com.velocitypowered</groupId>
-      <artifactId>velocity-api</artifactId>
-      <version>1.1.1</version>
       <scope>provided</scope>
     </dependency>
     <!-- Core Dependencies -->
@@ -121,9 +103,9 @@
       <version>4.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>okhttp</artifactId>
-      <version>4.9.0</version>
+      <groupId>com.konghq</groupId>
+      <artifactId>unirest-java</artifactId>
+      <version>3.11.04</version>
     </dependency>
   </dependencies>
 </project>

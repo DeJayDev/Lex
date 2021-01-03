@@ -2,7 +2,7 @@ package dev.dejay.reactor.commands;
 
 import dev.dejay.reactor.annotations.PlayerOnly;
 import dev.dejay.reactor.chat.ChatUtil;
-import java.lang.reflect.InvocationTargetException;
+import dev.dejay.reactor.utils.BukkitTools;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
@@ -79,8 +79,8 @@ public class BaseCommand extends Command {
         return Component.empty();
     }
 
-    public void doRegister() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        final SimpleCommandMap commandMap = PlatformTools.getCommandMap(plugin);
+    public void doRegister() throws ReflectiveOperationException {
+        final SimpleCommandMap commandMap = BukkitTools.getCommandMap(plugin);
         commandMap.register(getName(), plugin.getName().toLowerCase(), this);
         commandMap.registerServerAliases();
     }

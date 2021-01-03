@@ -21,11 +21,6 @@ public enum ConfigType {
     YAML("yaml", "yml"),
 
     /**
-     * Known extensions for TOML formatted files.
-     */
-    TOML("toml"),
-
-    /**
      * If the file type is unknown.
      */
     UNKNOWN;
