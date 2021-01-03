@@ -98,7 +98,7 @@ public class BaseCommand extends Command {
     }
 
     public TextComponent errorMessage(String message) {
-        return Component.text(message).style(ChatUtil.getErrorStyle());
+        return Component.text(message, ChatUtil.getErrorStyle());
     }
 
     public void success(CommandSender sender, String message) {
@@ -106,7 +106,7 @@ public class BaseCommand extends Command {
     }
 
     public TextComponent successMessage(String message) {
-        return Component.text(message).style(ChatUtil.getSuccessStyle());
+        return Component.text(message, ChatUtil.getSuccessStyle());
     }
 
 }

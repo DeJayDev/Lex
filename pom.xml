@@ -6,7 +6,7 @@
 
   <groupId>dev.dejay</groupId>
   <artifactId>reactor</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
   <packaging>jar</packaging>
 
   <name>Reactor</name>
@@ -78,7 +78,7 @@
   </repositories>
 
   <dependencies>
-    <!-- Paper 1.16.4 -->
+    <!-- Paper 1.16.5 -->
     <dependency>
       <groupId>com.destroystokyo.paper</groupId>
       <artifactId>paper</artifactId>
