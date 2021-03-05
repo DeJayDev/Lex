@@ -28,20 +28,20 @@ public class BaseCommand extends Command {
     }
 
     public BaseCommand(JavaPlugin plugin, String name, String description) {
-        super(name, description, null, Collections.emptyList());
+        super(name, description != null ? description : "", "<command>", Collections.emptyList());
         this.plugin = plugin;
         register();
     }
 
     public BaseCommand(JavaPlugin plugin, String name, String description, String permission) {
-        super(name, description, null, Collections.emptyList());
+        super(name, description != null ? description : "", "<command>", Collections.emptyList());
         this.plugin = plugin;
         setPermission(permission);
         register();
     }
 
     public BaseCommand(JavaPlugin plugin, String name, String description, String permission, String... aliases) {
-        super(name, description, null, Arrays.asList(aliases));
+        super(name, description != null ? description : "", "<command>", Arrays.asList(aliases));
         this.plugin = plugin;
         setPermission(permission);
         register();
@@ -80,9 +80,13 @@ public class BaseCommand extends Command {
     }
 
     public void doRegister() throws ReflectiveOperationException {
+        System.out.println("Attempting command register for: " + this.getClass().getSimpleName());
         final SimpleCommandMap commandMap = BukkitTools.getCommandMap(plugin);
+        System.out.println("Got commandMap as: " + commandMap.toString());
+        System.out.println("Registering...");
         commandMap.register(getName(), plugin.getName().toLowerCase(), this);
-        commandMap.registerServerAliases();
+        System.out.println("Registered. Proof of concept...: " + commandMap.getCommand(getName()));
+        System.out.println("Registering aliases...");
     }
 
     public void register() {

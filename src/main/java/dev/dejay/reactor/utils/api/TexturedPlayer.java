@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 public class TexturedPlayer {
 
-    private String displayName;
-    private String texture;
-    private String signature;
+    private final String displayName;
+    private final String texture;
+    private final String signature;
 
 }

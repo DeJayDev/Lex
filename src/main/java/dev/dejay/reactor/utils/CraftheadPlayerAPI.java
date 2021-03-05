@@ -32,7 +32,7 @@ public class CraftheadPlayerAPI {
     }
 
     private static HttpResponse<CraftheadAPI> getPlayer(String player) throws Exception {
-        HttpResponse<CraftheadAPI> response = Unirest.get("https://api.ashcon.app/mojang/v2/user/{player}")
+        HttpResponse<CraftheadAPI> response = Unirest.get("https://crafthead.net/profile/{player}?unsigned=false")
             .routeParam("player", player)
             .header("User-Agent", "Reactor/v1.0.0 (+https://github.com/DeJayDev)")
             .asObject(CraftheadAPI.class);
