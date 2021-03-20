@@ -1,17 +1,34 @@
 package dev.dejay.reactor.config.type;
 
+import com.google.common.collect.Maps;
 import dev.dejay.reactor.Reactor;
 import dev.dejay.reactor.config.ConfigType;
 import dev.dejay.reactor.config.LoadableConfig;
+import dev.dejay.reactor.config.representer.YamlBukkitConstructor;
+import dev.dejay.reactor.config.representer.YamlObjectRepresenter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import org.apache.logging.log4j.Logger;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.DumperOptions.FlowStyle;
+import org.yaml.snakeyaml.TypeDescription;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.introspector.BeanAccess;
 
 public abstract class YamlConfig<T extends YamlConfig> implements LoadableConfig<T> {
+
+    /**
+     * Fucked if I know.
+     */
+    private static final transient YamlObjectRepresenter REPRESENTER = new YamlObjectRepresenter();
+    private static final transient DumperOptions DUMPER_OPTIONS = new DumperOptions();
 
     /**
      * Class of the configuration (for serialisation).
@@ -19,14 +36,14 @@ public abstract class YamlConfig<T extends YamlConfig> implements LoadableConfig
     private transient final Class<T> clazz;
 
     /**
-     * The Bukkit config that will be used to drive the automatic loading.
-     */
-    protected transient final YamlConfiguration config;
-
-    /**
      * Logger to log to.
      */
     private transient final Logger logger;
+
+    /**
+     * Backing yaml (the fucks a backing yaml?)
+     */
+    private final transient Yaml backingYaml;
 
     /**
      * Represents a configuration file.
@@ -35,15 +52,13 @@ public abstract class YamlConfig<T extends YamlConfig> implements LoadableConfig
      */
     public YamlConfig(Class<T> clazz) throws NullPointerException {
         this.clazz = clazz;
-        this.config = new YamlConfiguration();
         this.logger = Reactor.getLogger();
-
-        if (Files.exists(this.getPath())) {
-            try {
-                this.config.load(this.getPath().toFile());
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
+        this.backingYaml = new Yaml(new YamlBukkitConstructor(this.clazz), REPRESENTER, DUMPER_OPTIONS);
+        this.backingYaml.setBeanAccess(BeanAccess.FIELD);
+        for (Field field : this.clazz.getDeclaredFields()) {
+            field.setAccessible(true);
+            if (Modifier.isStatic(field.getModifiers()) || !field.getType().isEnum()) continue;
+            this.backingYaml.addTypeDescription(new TypeDescription(field.getType(), field.getName()));
         }
     }
 
@@ -53,25 +68,21 @@ public abstract class YamlConfig<T extends YamlConfig> implements LoadableConfig
      * @return The config instance.
      */
     @Override
-    @SuppressWarnings("unchecked")
     public T load() {
         try {
+            YamlBukkitConstructor.CLASS_MAPPINGS.put(this.clazz.getName(), this.clazz);
             this.logger.info("Attempting to load config, " + this.getClass().getSimpleName() + "..");
-
-            T instance;
-
-            if (!Files.exists(this.getPath())) {
-                this.logger.warn("Could not find, " + this.getPath().toFile().getName() + ", creating one now..");
-
-                instance = (T) this.clazz.getDeclaredConstructor().newInstance().getDefaultConfig();
-                instance.save();
+            return (T)((YamlConfig)this.backingYaml.loadAs(new FileInputStream(this.getPath().toFile()), this.clazz));
+        }
+        catch (Exception e) {
+            if (e instanceof FileNotFoundException) {
+                this.logger.warn("Could not find, " + this.getPath().toFile().getName() + ", creating one now...");
             } else {
-                instance = this.clazz.getDeclaredConstructor().newInstance();
+                e.printStackTrace();
             }
-
-            return instance;
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
-            throw new RuntimeException(e);
+            LoadableConfig config = this.getDefaultConfig();
+            config.save();
+            return (T)config;
         }
     }
 
@@ -97,14 +108,43 @@ public abstract class YamlConfig<T extends YamlConfig> implements LoadableConfig
 
     @Override
     public void save() {
-        this.writeValues(this.config);
-
+        this.logger.info("Saving config, " + this.getClass().getSimpleName() + "..");
         try {
-            this.config.save(this.getPath().toFile());
-        } catch (IOException e) {
+            Path saveDirectory = this.getPath().getParent();
+            if (!Files.exists(saveDirectory)) {
+                Files.createDirectory(saveDirectory);
+            }
+
+            if (!Files.exists(this.getPath())) {
+                Files.createFile(this.getPath());
+            }
+
+            HashMap<String, Object> tags = Maps.newHashMap();
+            for (Field field : this.clazz.getDeclaredFields()) {
+                field.setAccessible(true);
+                if (Modifier.isStatic(field.getModifiers())) continue;
+                try {
+                    if (field.getClass().isEnum()) {
+                        tags.put(field.getName(), ((Enum)field.get(this)).name());
+                        continue;
+                    }
+                    tags.put(field.getName(), field.get(this));
+                }
+                catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            FileWriter writer = new FileWriter(this.getPath().toFile());
+            this.backingYaml.dump(tags, writer);
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public abstract void writeValues(YamlConfiguration config);
+    static {
+        DUMPER_OPTIONS.setDefaultFlowStyle(FlowStyle.BLOCK);
+        DUMPER_OPTIONS.setPrettyFlow(true);
+    }
+
 }

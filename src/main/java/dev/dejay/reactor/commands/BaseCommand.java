@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public class BaseCommand extends Command {
 
@@ -28,27 +29,27 @@ public class BaseCommand extends Command {
     }
 
     public BaseCommand(JavaPlugin plugin, String name, String description) {
-        super(name, description != null ? description : "", "<command>", Collections.emptyList());
+        super(name, description != null ? description : "", "/" + name, Collections.emptyList());
         this.plugin = plugin;
         register();
     }
 
     public BaseCommand(JavaPlugin plugin, String name, String description, String permission) {
-        super(name, description != null ? description : "", "<command>", Collections.emptyList());
+        super(name, description != null ? description : "", "/" + name, Collections.emptyList());
         this.plugin = plugin;
         setPermission(permission);
         register();
     }
 
     public BaseCommand(JavaPlugin plugin, String name, String description, String permission, String... aliases) {
-        super(name, description != null ? description : "", "<command>", Arrays.asList(aliases));
+        super(name, description != null ? description : "", "/" + name, Arrays.asList(aliases));
         this.plugin = plugin;
         setPermission(permission);
         register();
     }
 
     @Override
-    public boolean execute(CommandSender sender, String command, String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String command, String[] args) {
         Class<?> objectClass = getClass();
 
         for (Method method : objectClass.getMethods()) {
@@ -71,7 +72,7 @@ public class BaseCommand extends Command {
         TextComponent response = run(plugin, sender, args);
         ChatUtil.getAudience(plugin)
             .sender(sender)
-            .sendMessage(response.style(ChatUtil.getSuccessStyle()));
+            .sendMessage(response);
         return true;
     }
 
@@ -80,13 +81,8 @@ public class BaseCommand extends Command {
     }
 
     public void doRegister() throws ReflectiveOperationException {
-        System.out.println("Attempting command register for: " + this.getClass().getSimpleName());
         final SimpleCommandMap commandMap = BukkitTools.getCommandMap(plugin);
-        System.out.println("Got commandMap as: " + commandMap.toString());
-        System.out.println("Registering...");
         commandMap.register(getName(), plugin.getName().toLowerCase(), this);
-        System.out.println("Registered. Proof of concept...: " + commandMap.getCommand(getName()));
-        System.out.println("Registering aliases...");
     }
 
     public void register() {

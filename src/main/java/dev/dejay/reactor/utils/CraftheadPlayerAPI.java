@@ -1,5 +1,6 @@
 package dev.dejay.reactor.utils;
 
+import com.destroystokyo.paper.profile.ProfileProperty;
 import dev.dejay.reactor.Reactor;
 import dev.dejay.reactor.utils.api.CraftheadAPI;
 import dev.dejay.reactor.utils.api.TexturedPlayer;
@@ -29,6 +30,14 @@ public class CraftheadPlayerAPI {
 
     public static UUID getPlayerUUID(String player) throws Exception {
         return getPlayer(player).getBody().id;
+    }
+
+    public static ProfileProperty getProfile(String player) throws Exception {
+        CraftheadAPI response = getPlayer(player).getBody();
+
+        return new ProfileProperty(response.name,
+            response.properties.value,
+            response.properties.signature);
     }
 
     private static HttpResponse<CraftheadAPI> getPlayer(String player) throws Exception {

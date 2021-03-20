@@ -1,5 +1,6 @@
 package dev.dejay.reactor.utils;
 
+import com.destroystokyo.paper.profile.ProfileProperty;
 import dev.dejay.reactor.Reactor;
 import dev.dejay.reactor.utils.api.AshconAPI;
 import dev.dejay.reactor.utils.api.TexturedPlayer;
@@ -29,6 +30,14 @@ public class AshconPlayerAPI {
 
     public static UUID getPlayerUUID(String player) throws Exception {
         return getPlayer(player).getBody().uuid;
+    }
+
+    public static ProfileProperty getProfile(String player) throws Exception {
+        AshconAPI response = getPlayer(player).getBody();
+
+        return new ProfileProperty(response.username,
+            response.textures.raw.value,
+            response.textures.raw.signature);
     }
 
     private static HttpResponse<AshconAPI> getPlayer(String player) throws Exception {
