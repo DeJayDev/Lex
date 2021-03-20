@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public class BaseCommand extends Command {
 
     @Getter
-    private JavaPlugin plugin;
+    private final JavaPlugin plugin;
 
     public BaseCommand(JavaPlugin plugin, String name) {
         super(name);

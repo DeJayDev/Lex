@@ -46,8 +46,8 @@ public class CraftheadPlayerAPI {
             .header("User-Agent", "Reactor/v1.0.0 (+https://github.com/DeJayDev)")
             .asObject(CraftheadAPI.class);
 
-        if(response.getBody() == null) {
-            if(response.getParsingError().isPresent()) {
+        if (response.getBody() == null) {
+            if (response.getParsingError().isPresent()) {
                 UnirestParsingException ex = response.getParsingError().get();
                 Reactor.getLogger().error(ex.getOriginalBody());
                 throw new Exception("Request Failed (Invalid User?)");

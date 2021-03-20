@@ -38,14 +38,18 @@ public class ReactorItem extends AbstractItem {
     private static final Map<Class<? extends ItemStack>, Class<? extends ReactorItem>> metaMap = new HashMap<>();
     private static final Map<String, Class<? extends ReactorItem>> craftMetaMap = new HashMap<>();
 
-    @NotNull private Material type = Material.AIR; // "null"
+    @NotNull
+    private Material type = Material.AIR; // "null"
     private int amount = 1;
     private short durability = 0;
 
     private Component displayName = Component.empty();
-    @Singular private List<Component> lore = new ArrayList<>();
-    @Singular private Map<Enchantment, Integer> enchants = new HashMap<>();
-    @Singular private List<ItemFlag> flags = new ArrayList<>();
+    @Singular
+    private List<Component> lore = new ArrayList<>();
+    @Singular
+    private Map<Enchantment, Integer> enchants = new HashMap<>();
+    @Singular
+    private List<ItemFlag> flags = new ArrayList<>();
     private boolean unbreakable = false;
 
     public ReactorItem(@NotNull Material type, int amount) {
@@ -75,7 +79,7 @@ public class ReactorItem extends AbstractItem {
         ItemStack itemStack = new ItemStack(type, amount);
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
-            if(displayName != Component.empty()) {
+            if (displayName != Component.empty()) {
                 meta.displayName(displayName);
             }
             meta.lore(lore);
@@ -88,7 +92,7 @@ public class ReactorItem extends AbstractItem {
     public Builder modify() {
         try {
             ItemMeta meta = Bukkit.getItemFactory().getItemMeta(type);
-            if(craftMetaMap.containsKey(meta.getClass().getSimpleName())) {
+            if (craftMetaMap.containsKey(meta.getClass().getSimpleName())) {
                 return (Builder) craftMetaMap.get(meta.getClass().getSimpleName()).getDeclaredClasses()[0].getDeclaredConstructors()[1].newInstance(this);
             }
         } catch (Exception e) {

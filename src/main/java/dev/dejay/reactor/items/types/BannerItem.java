@@ -26,7 +26,7 @@ public class BannerItem extends ReactorItem {
     @Override
     public ItemStack toItemStack() {
         ItemStack stack = super.toItemStack();
-        if(stack.getItemMeta() != null) {
+        if (stack.getItemMeta() != null) {
             BannerMeta meta = (BannerMeta) stack.getItemMeta();
             meta.setPatterns(patterns);
             stack.setItemMeta(meta);
@@ -36,7 +36,7 @@ public class BannerItem extends ReactorItem {
 
     public static BannerItem of(ItemStack itemStack) {
         BannerItem item = (BannerItem) ReactorItem.of(itemStack, false);
-        if(itemStack.getItemMeta() != null) {
+        if (itemStack.getItemMeta() != null) {
             ((BannerMeta) itemStack.getItemMeta()).getPatterns().addAll(item.patterns);
         }
         return item;
@@ -47,6 +47,7 @@ public class BannerItem extends ReactorItem {
     }
 
     public static class Builder extends ReactorItem.Builder<BannerItem, Builder> {
+
         protected Builder() {
         }
 

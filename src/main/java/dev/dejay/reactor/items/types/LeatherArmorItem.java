@@ -43,6 +43,7 @@ public class LeatherArmorItem extends ReactorItem {
     }
 
     public static class Builder extends ReactorItem.Builder<LeatherArmorItem, Builder> {
+
         protected Builder() {
         }
 

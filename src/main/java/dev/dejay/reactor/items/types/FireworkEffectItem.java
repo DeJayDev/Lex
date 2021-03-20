@@ -43,6 +43,7 @@ public class FireworkEffectItem extends ReactorItem {
     }
 
     public static class Builder extends ReactorItem.Builder<FireworkEffectItem, Builder> {
+
         protected Builder() {
         }
 

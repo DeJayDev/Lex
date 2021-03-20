@@ -28,7 +28,7 @@ public class BookItem extends ReactorItem {
     @Override
     public ItemStack toItemStack() {
         ItemStack stack = super.toItemStack();
-        if(stack.getItemMeta() != null) {
+        if (stack.getItemMeta() != null) {
             BookMeta meta = (BookMeta) stack.getItemMeta();
             meta.setTitle(title);
             meta.setAuthor(author);
@@ -40,7 +40,7 @@ public class BookItem extends ReactorItem {
 
     public static BookItem of(ItemStack itemStack) {
         BookItem item = (BookItem) ReactorItem.of(itemStack, false);
-        if(itemStack.getItemMeta() != null) {
+        if (itemStack.getItemMeta() != null) {
             item.title = ((BookMeta) itemStack.getItemMeta()).getTitle();
             item.author = ((BookMeta) itemStack.getItemMeta()).getAuthor();
             item.pages.addAll(((BookMeta) itemStack.getItemMeta()).pages());
@@ -53,6 +53,7 @@ public class BookItem extends ReactorItem {
     }
 
     public static class Builder extends ReactorItem.Builder<BookItem, Builder> {
+
         protected Builder() {
         }
 

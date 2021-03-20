@@ -67,6 +67,7 @@ public class SkullItem extends ReactorItem {
     }
 
     public static class Builder extends ReactorItem.Builder<SkullItem, Builder> {
+
         protected Builder() {
         }
 

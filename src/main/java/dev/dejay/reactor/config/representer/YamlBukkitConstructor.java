@@ -8,6 +8,7 @@ import org.yaml.snakeyaml.nodes.Node;
 
 public class YamlBukkitConstructor
     extends Constructor {
+
     public static final Map<String, Class<?>> CLASS_MAPPINGS = Maps.newHashMap();
 
     public YamlBukkitConstructor(Class<?> root) {
@@ -20,8 +21,7 @@ public class YamlBukkitConstructor
         Class clazz = CLASS_MAPPINGS.computeIfAbsent(name, claz -> {
             try {
                 return Class.forName(name, true, Reactor.class.getClassLoader());
-            }
-            catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException e) {
                 return null;
             }
         });

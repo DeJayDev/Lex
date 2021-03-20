@@ -42,6 +42,7 @@ public class MapItem extends ReactorItem {
     }
 
     public static class Builder extends ReactorItem.Builder<MapItem, Builder> {
+
         protected Builder() {
         }
 

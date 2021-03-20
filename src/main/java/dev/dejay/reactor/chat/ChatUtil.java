@@ -34,17 +34,17 @@ public class ChatUtil {
     }
 
     public static Component formatName(CommandSender target, Boolean grammar) {
-        if(!(target instanceof Player)) {
+        if (!(target instanceof Player)) {
             return Component.text(target.getName()); // If they're not human, fuck it.
         }
 
         Player player = (Player) target;
 
-        if(!grammar) {
+        if (!grammar) {
             return player.displayName();
         }
 
-        if(player.displayName().toString().endsWith("s")) {
+        if (player.displayName().toString().endsWith("s")) {
             return player.displayName().append(Component.text("'"));
         } else {
             return player.displayName().append(Component.text("'s"));

@@ -9,6 +9,7 @@ public class CraftheadAPI {
     public MojangSkin properties;
 
     public class MojangSkin {
+
         public String name;
         public String value;
         public String signature;

@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 public class Reactor {
 
     public final static String VERSION = "0.0.3";
-    private static Logger logger = LogManager.getLogger(Reactor.class);
+    private static final Logger logger = LogManager.getLogger(Reactor.class);
 
     public static void main(String[] args) {
         System.out.println("Welcome to Reactor v" + VERSION);

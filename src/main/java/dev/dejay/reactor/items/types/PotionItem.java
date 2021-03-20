@@ -53,6 +53,7 @@ public class PotionItem extends ReactorItem {
     }
 
     public static class Builder extends ReactorItem.Builder<PotionItem, Builder> {
+
         protected Builder() {
         }
 

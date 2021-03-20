@@ -57,7 +57,7 @@ public abstract class YamlConfig<T extends YamlConfig> implements LoadableConfig
         this.backingYaml.setBeanAccess(BeanAccess.FIELD);
         for (Field field : this.clazz.getDeclaredFields()) {
             field.setAccessible(true);
-            if (Modifier.isStatic(field.getModifiers()) || !field.getType().isEnum()) continue;
+            if (Modifier.isStatic(field.getModifiers()) || !field.getType().isEnum()) { continue; }
             this.backingYaml.addTypeDescription(new TypeDescription(field.getType(), field.getName()));
         }
     }
@@ -72,9 +72,8 @@ public abstract class YamlConfig<T extends YamlConfig> implements LoadableConfig
         try {
             YamlBukkitConstructor.CLASS_MAPPINGS.put(this.clazz.getName(), this.clazz);
             this.logger.info("Attempting to load config, " + this.getClass().getSimpleName() + "..");
-            return (T)((YamlConfig)this.backingYaml.loadAs(new FileInputStream(this.getPath().toFile()), this.clazz));
-        }
-        catch (Exception e) {
+            return this.backingYaml.loadAs(new FileInputStream(this.getPath().toFile()), this.clazz);
+        } catch (Exception e) {
             if (e instanceof FileNotFoundException) {
                 this.logger.warn("Could not find, " + this.getPath().toFile().getName() + ", creating one now...");
             } else {
@@ -82,7 +81,7 @@ public abstract class YamlConfig<T extends YamlConfig> implements LoadableConfig
             }
             LoadableConfig config = this.getDefaultConfig();
             config.save();
-            return (T)config;
+            return (T) config;
         }
     }
 
@@ -122,22 +121,20 @@ public abstract class YamlConfig<T extends YamlConfig> implements LoadableConfig
             HashMap<String, Object> tags = Maps.newHashMap();
             for (Field field : this.clazz.getDeclaredFields()) {
                 field.setAccessible(true);
-                if (Modifier.isStatic(field.getModifiers())) continue;
+                if (Modifier.isStatic(field.getModifiers())) { continue; }
                 try {
                     if (field.getClass().isEnum()) {
-                        tags.put(field.getName(), ((Enum)field.get(this)).name());
+                        tags.put(field.getName(), ((Enum) field.get(this)).name());
                         continue;
                     }
                     tags.put(field.getName(), field.get(this));
-                }
-                catch (IllegalAccessException e) {
+                } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
             FileWriter writer = new FileWriter(this.getPath().toFile());
             this.backingYaml.dump(tags, writer);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

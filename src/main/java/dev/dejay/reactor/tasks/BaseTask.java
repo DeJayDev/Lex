@@ -12,7 +12,8 @@ public class BaseTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {}
+    public void run() {
+    }
 
     protected JavaPlugin getPlugin() {
         return plugin;
