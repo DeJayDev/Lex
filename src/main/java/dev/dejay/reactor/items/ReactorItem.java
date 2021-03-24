@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Singular;
 import lombok.ToString;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -43,9 +44,9 @@ public class ReactorItem extends AbstractItem {
     private int amount = 1;
     private short durability = 0;
 
-    private Component displayName = Component.empty();
+    private String displayName;
     @Singular
-    private List<Component> lore = new ArrayList<>();
+    private List<String> lore = new ArrayList<>();
     @Singular
     private Map<Enchantment, Integer> enchants = new HashMap<>();
     @Singular
@@ -67,7 +68,7 @@ public class ReactorItem extends AbstractItem {
         this.type = type;
         this.amount = amount;
         this.durability = durability;
-        this.displayName = displayName;
+        this.displayName = LegacyComponentSerializer.legacyAmpersand().serialize(displayName);
     }
 
     public ReactorItem(ReactorItem other) {
@@ -79,10 +80,17 @@ public class ReactorItem extends AbstractItem {
         ItemStack itemStack = new ItemStack(type, amount);
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
-            if (displayName != Component.empty()) {
-                meta.displayName(displayName);
+            if (displayName != null) {
+                meta.setDisplayName(displayName);
             }
-            meta.lore(lore);
+            getLore().forEach(str -> {
+                if(meta.hasLore()) {
+                    meta.getLore().add(str);
+                } else {
+                    meta.setLore(Arrays.asList(str));
+                }
+            });
+            //meta.lore();
             enchants.forEach((key, value) -> meta.addEnchant(key, value, true));
             flags.forEach(meta::addItemFlags);
         }
@@ -120,7 +128,7 @@ public class ReactorItem extends AbstractItem {
         builder.amount(itemStack.getAmount());
         builder.durability(itemStack.getDurability());
         if (itemStack.getItemMeta() != null) {
-            builder.displayName(itemStack.getItemMeta().displayName());
+            builder.displayName(LegacyComponentSerializer.legacySection().deserialize(itemStack.getItemMeta().getDisplayName()));
             builder.lore(itemStack.getItemMeta().getLore());
             builder.enchants(itemStack.getItemMeta().getEnchants());
             builder.unbreakable(itemStack.getItemMeta().isUnbreakable());
@@ -183,22 +191,26 @@ public class ReactorItem extends AbstractItem {
         }
 
         public B displayName(Component displayName) {
-            item.setDisplayName(displayName);
+            item.setDisplayName(LegacyComponentSerializer.legacyAmpersand().serialize(displayName));
             return (B) this;
         }
 
         public B lore(Collection<Component> lore) {
-            item.getLore().addAll(lore);
+            lore.forEach(component -> {
+                item.getLore().add(LegacyComponentSerializer.legacyAmpersand().serialize(component));
+            });
             return (B) this;
         }
 
         public B lore(Component... lines) {
-            item.getLore().addAll(Arrays.asList(lines));
+            Arrays.asList(lines).forEach(line -> {
+                item.getLore().add(LegacyComponentSerializer.legacyAmpersand().serialize(line));
+            });
             return (B) this;
         }
 
         public B lore(Component line) {
-            item.getLore().add(line);
+            item.getLore().add(LegacyComponentSerializer.legacyAmpersand().serialize(line));
             return (B) this;
         }
 
