@@ -20,13 +20,9 @@ public class ChatUtil {
     @Getter
     public static final Style errorStyle = Style.style(RED);
 
-    public static Component formatPlayerName(Player player, Boolean grammar) {
-        return formatName(player, grammar);
-    }
-
-    public static Component formatName(CommandSender target, Boolean grammar) {
+    public static Component formatPlayerName(CommandSender target, boolean grammar) {
         if (!(target instanceof Player)) {
-            return Component.text(target.getName()); // If they're not human, fuck it.
+            return Component.text(target.getName());
         }
 
         Player player = (Player) target;

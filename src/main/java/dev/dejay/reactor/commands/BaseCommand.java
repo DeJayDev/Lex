@@ -2,7 +2,6 @@ package dev.dejay.reactor.commands;
 
 import dev.dejay.reactor.annotations.PlayerOnly;
 import dev.dejay.reactor.chat.ChatUtil;
-import dev.dejay.reactor.utils.BukkitTools;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -95,7 +95,7 @@ public class BaseCommand extends Command {
 
     public void register() {
         try {
-            final CommandMap commandMap = BukkitTools.getCommandMap();
+            final CommandMap commandMap = Bukkit.getCommandMap();
             commandMap.register(getName(), plugin.getName().toLowerCase(), this);
         } catch (Throwable exception) {
             exception.printStackTrace();
@@ -103,7 +103,7 @@ public class BaseCommand extends Command {
     }
 
     public void unregister() {
-        final CommandMap commandMap = BukkitTools.getCommandMap();
+        final CommandMap commandMap = Bukkit.getCommandMap();
         if(commandMap.getCommand(getName()) != null) {
             this.unregister(commandMap);
         }

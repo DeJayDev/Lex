@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 public class Reactor {
 
+    public static Gson gson = new Gson();
     public final static String VERSION = "$version";
     private static final Logger logger = LogManager.getLogger(Reactor.class);
 
@@ -18,7 +19,7 @@ public class Reactor {
     }
 
     public static Gson getGson() {
-        return new Gson();
+        return gson;
     }
 
 }
