@@ -1,4 +1,4 @@
-name: Reactor
+name: Lex
 version: @version@
-main: dev.dejay.reactor.Reactor
+main: dev.dejay.lex.Lex
 api-version: 1.17
