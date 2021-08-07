@@ -4,20 +4,23 @@ import dev.dejay.reactor.annotations.PlayerOnly;
 import dev.dejay.reactor.chat.ChatUtil;
 import dev.dejay.reactor.utils.BukkitTools;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public class BaseCommand extends Command {
+
+    private final List<SubCommand> subCommands = new ArrayList<>();
 
     @Getter
     private final JavaPlugin plugin;
@@ -48,6 +51,18 @@ public class BaseCommand extends Command {
         register();
     }
 
+    public List<SubCommand> getSubCommands() {
+        return subCommands;
+    }
+
+    public void addSubCommand(SubCommand sub) {
+        subCommands.add(sub);
+    }
+
+    public void addSubCommands(SubCommand... subs) {
+        Collections.addAll(subCommands, subs);
+    }
+
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String command, String[] args) {
         Class<?> objectClass = getClass();
@@ -69,44 +84,61 @@ public class BaseCommand extends Command {
             return true;
         }
 
-        TextComponent response = run(plugin, sender, args);
-        ChatUtil.getAudience(plugin)
-            .sender(sender)
-            .sendMessage(response);
+        Component response = run(plugin, sender, args);
+        sender.sendMessage(response);
         return true;
     }
 
-    public TextComponent run(JavaPlugin plugin, CommandSender sender, String[] args) {
+    public Component run(JavaPlugin plugin, CommandSender sender, String[] args) {
         return Component.empty();
-    }
-
-    public void doRegister() throws ReflectiveOperationException {
-        final SimpleCommandMap commandMap = BukkitTools.getCommandMap(plugin);
-        commandMap.register(getName(), plugin.getName().toLowerCase(), this);
     }
 
     public void register() {
         try {
-            doRegister();
+            final CommandMap commandMap = BukkitTools.getCommandMap();
+            commandMap.register(getName(), plugin.getName().toLowerCase(), this);
         } catch (Throwable exception) {
             exception.printStackTrace();
         }
     }
 
-    public void error(CommandSender sender, String message) {
-        ChatUtil.getAudience(plugin).sender(sender).sendMessage(errorMessage(message));
+    public void unregister() {
+        final CommandMap commandMap = BukkitTools.getCommandMap();
+        if(commandMap.getCommand(getName()) != null) {
+            this.unregister(commandMap);
+        }
     }
 
-    public TextComponent errorMessage(String message) {
+    public void error(CommandSender sender, String message) {
+        sender.sendMessage(errorMessage(message));
+    }
+
+    public Component errorMessage(String message) {
         return Component.text(message, ChatUtil.getErrorStyle());
     }
 
     public void success(CommandSender sender, String message) {
-        ChatUtil.getAudience(plugin).sender(sender).sendMessage(successMessage(message));
+        sender.sendMessage(successMessage(message));
     }
 
-    public TextComponent successMessage(String message) {
+    public Component successMessage(String message) {
         return Component.text(message, ChatUtil.getSuccessStyle());
+    }
+
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        return super.tabComplete(sender, alias, args, null);
+    }
+
+    @Override
+    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+        List<String> subs /* :flushed: */ = new ArrayList<>();
+        if(subCommands.size() == 0) return subs;
+        if (args.length == 1) {
+            for (SubCommand subCommand : subCommands) {
+                subs.add(subCommand.getName());
+            }
+        }
+        return subs;
     }
 
 }

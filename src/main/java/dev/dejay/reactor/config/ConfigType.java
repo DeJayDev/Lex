@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
-import javax.annotation.concurrent.Immutable;
 
-@Immutable
 public enum ConfigType {
 
     /**

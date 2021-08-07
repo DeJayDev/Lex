@@ -9,10 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import javax.annotation.concurrent.ThreadSafe;
 import org.apache.logging.log4j.Logger;
 
-@ThreadSafe
 public abstract class JsonConfig<T extends JsonConfig> implements LoadableConfig<T> {
 
     private static final Gson GSON_INSTANCE = new GsonBuilder()

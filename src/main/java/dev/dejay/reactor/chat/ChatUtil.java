@@ -6,16 +6,12 @@ import static net.kyori.adventure.text.format.NamedTextColor.RED;
 import static net.kyori.adventure.text.format.TextDecoration.ITALIC;
 
 import lombok.Getter;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class ChatUtil {
-
-    private static BukkitAudiences bukkitAudience;
 
     @Getter
     public static final Style successStyle = Style.style(GREEN);
@@ -23,11 +19,6 @@ public class ChatUtil {
     public static final Style hintStyle = Style.style(GRAY, ITALIC);
     @Getter
     public static final Style errorStyle = Style.style(RED);
-
-    public static BukkitAudiences getAudience(JavaPlugin plugin) {
-        bukkitAudience = BukkitAudiences.create(plugin);
-        return bukkitAudience;
-    }
 
     public static Component formatPlayerName(Player player, Boolean grammar) {
         return formatName(player, grammar);

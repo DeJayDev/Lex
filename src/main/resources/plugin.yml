@@ -1,0 +1,4 @@
+name: Reactor
+version: @version@
+main: dev.dejay.reactor.Reactor
+api-version: 1.17

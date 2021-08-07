@@ -9,7 +9,6 @@ public class AshconAPI {
     public MojangSkins textures;
 
     public class MojangSkins {
-
         public Boolean custom;
         public Boolean slim;
         public MojangSkin skin;
@@ -17,13 +16,11 @@ public class AshconAPI {
     }
 
     public class MojangSkin {
-
         public String url;
         public String data;
     }
 
     public class MojangSkinRaw {
-
         public String value;
         public String signature;
     }
