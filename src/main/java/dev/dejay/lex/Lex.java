@@ -6,9 +6,12 @@ import org.apache.logging.log4j.Logger;
 
 public class Lex {
 
+    private Lex lex;
+
     public static Gson gson = new Gson();
     public final static String VERSION = "$version";
     private static final Logger logger = LogManager.getLogger(Lex.class);
+
 
     public static void main(String[] args) {
         System.out.println("This is Lex v" + VERSION);

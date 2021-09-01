@@ -3,7 +3,6 @@ package dev.dejay.lex.commands;
 import dev.dejay.lex.annotations.PlayerOnly;
 import dev.dejay.lex.chat.ChatUtil;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -19,8 +18,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public class BaseCommand extends Command {
-
-    private final List<SubCommand> subCommands = new ArrayList<>();
 
     @Getter
     private final JavaPlugin plugin;
@@ -49,18 +46,6 @@ public class BaseCommand extends Command {
         this.plugin = plugin;
         setPermission(permission);
         register();
-    }
-
-    public List<SubCommand> getSubCommands() {
-        return subCommands;
-    }
-
-    public void addSubCommand(SubCommand sub) {
-        subCommands.add(sub);
-    }
-
-    public void addSubCommands(SubCommand... subs) {
-        Collections.addAll(subCommands, subs);
     }
 
     @Override
@@ -104,7 +89,7 @@ public class BaseCommand extends Command {
 
     public void unregister() {
         final CommandMap commandMap = Bukkit.getCommandMap();
-        if(commandMap.getCommand(getName()) != null) {
+        if (commandMap.getCommand(getName()) != null) {
             this.unregister(commandMap);
         }
     }
@@ -127,18 +112,6 @@ public class BaseCommand extends Command {
 
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
         return super.tabComplete(sender, alias, args, null);
-    }
-
-    @Override
-    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
-        List<String> subs /* :flushed: */ = new ArrayList<>();
-        if(subCommands.size() == 0) return subs;
-        if (args.length == 1) {
-            for (SubCommand subCommand : subCommands) {
-                subs.add(subCommand.getName());
-            }
-        }
-        return subs;
     }
 
 }

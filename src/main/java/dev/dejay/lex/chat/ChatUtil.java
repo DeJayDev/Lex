@@ -14,11 +14,11 @@ import org.bukkit.entity.Player;
 public class ChatUtil {
 
     @Getter
-    public static final Style successStyle = Style.style(GREEN);
+    private static final Style successStyle = Style.style(GREEN);
     @Getter
-    public static final Style hintStyle = Style.style(GRAY, ITALIC);
+    private static final Style hintStyle = Style.style(GRAY, ITALIC);
     @Getter
-    public static final Style errorStyle = Style.style(RED);
+    private static final Style errorStyle = Style.style(RED);
 
     public static Component formatPlayerName(CommandSender target, boolean grammar) {
         if (!(target instanceof Player)) {

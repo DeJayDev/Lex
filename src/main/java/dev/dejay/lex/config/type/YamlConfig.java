@@ -57,7 +57,7 @@ public abstract class YamlConfig<T extends YamlConfig> implements LoadableConfig
         this.backingYaml.setBeanAccess(BeanAccess.FIELD);
         for (Field field : this.clazz.getDeclaredFields()) {
             field.setAccessible(true);
-            if (Modifier.isStatic(field.getModifiers()) || !field.getType().isEnum()) { continue; }
+            if (Modifier.isStatic(field.getModifiers()) || !field.getType().isEnum()) {continue;}
             this.backingYaml.addTypeDescription(new TypeDescription(field.getType(), field.getName()));
         }
     }
@@ -121,7 +121,7 @@ public abstract class YamlConfig<T extends YamlConfig> implements LoadableConfig
             HashMap<String, Object> tags = Maps.newHashMap();
             for (Field field : this.clazz.getDeclaredFields()) {
                 field.setAccessible(true);
-                if (Modifier.isStatic(field.getModifiers())) { continue; }
+                if (Modifier.isStatic(field.getModifiers())) {continue;}
                 try {
                     if (field.getClass().isEnum()) {
                         tags.put(field.getName(), ((Enum) field.get(this)).name());
