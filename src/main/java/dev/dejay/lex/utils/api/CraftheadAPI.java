@@ -8,13 +8,6 @@ public class CraftheadAPI {
     public String name;
     public MojangSkin properties;
 
-    public class MojangSkin {
-
-        public String name;
-        public String value;
-        public String signature;
-    }
-
     @Override
     public String toString() {
         return "CraftheadAPI{" +
@@ -22,5 +15,12 @@ public class CraftheadAPI {
             ", name='" + name + '\'' +
             ", properties='" + properties + '\'' +
             '}';
+    }
+
+    public class MojangSkin {
+
+        public String name;
+        public String value;
+        public String signature;
     }
 }

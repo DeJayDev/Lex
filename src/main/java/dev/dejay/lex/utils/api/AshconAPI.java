@@ -8,6 +8,16 @@ public class AshconAPI {
     public String username;
     public MojangSkins textures;
 
+    @Override
+    public String toString() {
+        return "AshconAPI{" +
+            "uuid=" + uuid +
+            ", username='" + username + '\'' +
+            ", textures='" + textures + '\'' +
+            ", rawTextures=" + textures.raw +
+            '}';
+    }
+
     public class MojangSkins {
 
         public Boolean custom;
@@ -26,15 +36,5 @@ public class AshconAPI {
 
         public String value;
         public String signature;
-    }
-
-    @Override
-    public String toString() {
-        return "AshconAPI{" +
-            "uuid=" + uuid +
-            ", username='" + username + '\'' +
-            ", textures='" + textures + '\'' +
-            ", rawTextures=" + textures.raw +
-            '}';
     }
 }

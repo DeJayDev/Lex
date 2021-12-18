@@ -21,11 +21,9 @@ public class ChatUtil {
     private static final Style errorStyle = Style.style(RED);
 
     public static Component formatPlayerName(CommandSender target, boolean grammar) {
-        if (!(target instanceof Player)) {
+        if (!(target instanceof Player player)) {
             return Component.text(target.getName());
         }
-
-        Player player = (Player) target;
 
         if (!grammar) {
             return player.displayName();

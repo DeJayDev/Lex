@@ -39,10 +39,6 @@ public enum ConfigType {
         this.validExtensions = validExtensions;
     }
 
-    public String[] getValidExtensions() {
-        return this.validExtensions;
-    }
-
     public static ConfigType getType(Path path) throws IOException {
         return getType(path.toFile());
     }
@@ -59,5 +55,9 @@ public enum ConfigType {
 
         String extension = parts[parts.length - 1];
         return TYPES.get(extension.toLowerCase());
+    }
+
+    public String[] getValidExtensions() {
+        return this.validExtensions;
     }
 }
